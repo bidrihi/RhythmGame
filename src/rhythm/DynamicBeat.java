@@ -13,11 +13,19 @@ public class DynamicBeat extends JFrame {
     private Image screenImage;
     private Graphics screenGraphic;
 
-    private final Image introBackground = new ImageIcon(Main.class.getResource("../images/introBackground(Title).jpg")).getImage();
+    private Image background = new ImageIcon(Main.class.getResource("../images/introBackground(Title).jpg")).getImage();
+
     private final JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menuBar.png")));
     private final ImageIcon exitButtonEnterdImage = new ImageIcon(Main.class.getResource("../images/exit_entered.png"));
     private final ImageIcon exitButtonBasicImage = new ImageIcon(Main.class.getResource("../images/exit.png"));
     private JButton exitButton = new JButton(exitButtonBasicImage);
+
+    private ImageIcon startButtonEnterdImage = new ImageIcon(Main.class.getResource("../images/startButtonEntered.png"));
+    private ImageIcon startButtonBasicImage = new ImageIcon(Main.class.getResource("../images/startButtonBasic.png"));
+    private ImageIcon quitButtonEnterdImage = new ImageIcon(Main.class.getResource("../images/quitButtonEntered.png"));
+    private ImageIcon quitButtonBasicImage = new ImageIcon(Main.class.getResource("../images/quitButtonBasic.png"));
+    private JButton startButton = new JButton(startButtonBasicImage);
+    private JButton quitButton = new JButton(quitButtonBasicImage);
 
     private int mouseX, mouseY;
 
@@ -56,6 +64,57 @@ public class DynamicBeat extends JFrame {
         });
         add(exitButton);
 
+        startButton.setBounds(850, 490, 400, 100);
+        startButton.setBorderPainted(false);
+        startButton.setContentAreaFilled(false);
+        startButton.setFocusPainted(false);
+        startButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                startButton.setIcon(startButtonEnterdImage);
+                startButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                startButton.setIcon(startButtonBasicImage);
+                startButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // 게임 시작 이벤트 -> 나중에 로그인 창 띄우고 확인된 후에 넘어가도록 바꿔보기
+                startButton.setVisible(false);
+                quitButton.setVisible(false);
+                background = new ImageIcon(Main.class.getResource("../images/mainBackground.jpg")).getImage();
+            }
+        });
+        add(startButton);
+
+        quitButton.setBounds(850, 600, 400, 100);
+        quitButton.setBorderPainted(false);
+        quitButton.setContentAreaFilled(false);
+        quitButton.setFocusPainted(false);
+        quitButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                quitButton.setIcon(quitButtonEnterdImage);
+                quitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                quitButton.setIcon(quitButtonBasicImage);
+                quitButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                System.exit(0);
+            }
+        });
+        add(quitButton);
+
         menuBar.setBounds(0, 0, 1280, 30);
         menuBar.addMouseListener(new MouseAdapter() {
             @Override
@@ -85,7 +144,7 @@ public class DynamicBeat extends JFrame {
     // 3. 이때 paint 함수 안에서 repaint() 를 실행함으로써 paint() -> repaint() -> paint() 식으로 반복
     // 실행시켜보면 실제로 a -> c -> d -> b 순서로 반복됨
     // 이렇게 화면을 계속 띄워주는 이유는 한번만 화면을 띄워주게 되면 버퍼링 현상이 심해서 느려지는 문제가 있음
-    // -> 이에 paint 와 repaint 를 통해 계속해서 introBackground 이미지를 띄워주게 됨
+    // -> 이에 paint 와 repaint 를 통해 계속해서 background 이미지를 띄워주게 됨
     // 이런 기법을 더블 버퍼링 기법 이라고 함 : 버퍼에 이미지를 담아서 계속해서 갱신해줌
     public void paint(Graphics g) {
         screenImage = createImage(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -95,7 +154,7 @@ public class DynamicBeat extends JFrame {
     }
 
     public void screenDraw(Graphics g) {
-        g.drawImage(introBackground, 0, 0, null);
+        g.drawImage(background, 0, 0, null);
         paintComponents(g); // 이미지를 단순히 그려주는 것 이외에 JLabel 처럼 추가된 요소를 그리는 것
         this.repaint();
     }
