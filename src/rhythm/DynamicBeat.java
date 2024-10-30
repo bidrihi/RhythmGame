@@ -11,40 +11,42 @@ public class DynamicBeat extends JFrame {
     public static final int SCREEN_WIDTH = 1280;
     public static final int SCREEN_HEIGHT = 720;
 
-    private Image screenImage;
-    private Graphics screenGraphic;
-
     private Image background = new ImageIcon(Main.class.getResource("../images/introBackground(Title).jpg")).getImage();
 
-    private final JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menuBar.png")));
-    private final ImageIcon exitButtonEnterdImage = new ImageIcon(Main.class.getResource("../images/exit_entered.png"));
+    private final ImageIcon exitButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/exit_entered.png"));
     private final ImageIcon exitButtonBasicImage = new ImageIcon(Main.class.getResource("../images/exit.png"));
-    private JButton exitButton = new JButton(exitButtonBasicImage);
+    private final JButton exitButton = new JButton(exitButtonBasicImage);
 
-    private ImageIcon startButtonEnterdImage = new ImageIcon(Main.class.getResource("../images/startButtonEntered.png"));
-    private ImageIcon startButtonBasicImage = new ImageIcon(Main.class.getResource("../images/startButtonBasic.png"));
-    private ImageIcon quitButtonEnterdImage = new ImageIcon(Main.class.getResource("../images/quitButtonEntered.png"));
-    private ImageIcon quitButtonBasicImage = new ImageIcon(Main.class.getResource("../images/quitButtonBasic.png"));
-    private JButton startButton = new JButton(startButtonBasicImage);
-    private JButton quitButton = new JButton(quitButtonBasicImage);
+    private final ImageIcon startButtonEnterdImage = new ImageIcon(Main.class.getResource("../images/startButtonEntered.png"));
+    private final ImageIcon startButtonBasicImage = new ImageIcon(Main.class.getResource("../images/startButtonBasic.png"));
+    private final ImageIcon quitButtonEnterdImage = new ImageIcon(Main.class.getResource("../images/quitButtonEntered.png"));
+    private final ImageIcon quitButtonBasicImage = new ImageIcon(Main.class.getResource("../images/quitButtonBasic.png"));
+    private final JButton startButton = new JButton(startButtonBasicImage);
+    private final JButton quitButton = new JButton(quitButtonBasicImage);
 
-    private ImageIcon leftEnterdImage = new ImageIcon(Main.class.getResource("../images/leftEntered.png"));
-    private ImageIcon leftBasicImage = new ImageIcon(Main.class.getResource("../images/leftBasic.png"));
-    private ImageIcon rightEnterdImage = new ImageIcon(Main.class.getResource("../images/rightEntered.png"));
-    private ImageIcon rightBasicImage = new ImageIcon(Main.class.getResource("../images/rightBasic.png"));
-    private JButton leftButton = new JButton(leftBasicImage);
-    private JButton rightButton = new JButton(rightBasicImage);
+    private final ImageIcon leftEnterdImage = new ImageIcon(Main.class.getResource("../images/leftEntered.png"));
+    private final ImageIcon leftBasicImage = new ImageIcon(Main.class.getResource("../images/leftBasic.png"));
+    private final ImageIcon rightEnterdImage = new ImageIcon(Main.class.getResource("../images/rightEntered.png"));
+    private final ImageIcon rightBasicImage = new ImageIcon(Main.class.getResource("../images/rightBasic.png"));
+    private final JButton leftButton = new JButton(leftBasicImage);
+    private final JButton rightButton = new JButton(rightBasicImage);
 
-    private ImageIcon easyEnterdImage = new ImageIcon(Main.class.getResource("../images/easyButtonEntered.png"));
-    private ImageIcon easyBasicImage = new ImageIcon(Main.class.getResource("../images/easyButtonBasic.png"));
-    private ImageIcon hardEnterdImage = new ImageIcon(Main.class.getResource("../images/hardButtonEntered.png"));
-    private ImageIcon hardBasicImage = new ImageIcon(Main.class.getResource("../images/hardButtonBasic.png"));
-    private JButton easyButton = new JButton(easyBasicImage);
-    private JButton hardButton = new JButton(hardBasicImage);
+    private final ImageIcon easyEnteredImage = new ImageIcon(Main.class.getResource("../images/easyButtonEntered.png"));
+    private final ImageIcon easyBasicImage = new ImageIcon(Main.class.getResource("../images/easyButtonBasic.png"));
+    private final ImageIcon hardEnteredImage = new ImageIcon(Main.class.getResource("../images/hardButtonEntered.png"));
+    private final ImageIcon hardBasicImage = new ImageIcon(Main.class.getResource("../images/hardButtonBasic.png"));
+    private final JButton easyButton = new JButton(easyBasicImage);
+    private final JButton hardButton = new JButton(hardBasicImage);
+
+    private final ImageIcon backEnterdImage = new ImageIcon(Main.class.getResource("../images/backButtonEntered.png"));
+    private final ImageIcon backBasicImage = new ImageIcon(Main.class.getResource("../images/backButtonBasic.png"));
+    private final JButton backButton = new JButton(backBasicImage);
+
 
     private int mouseX, mouseY;
 
     private boolean isMainScreen = false;
+    private final Music introMusic = new Music("upbeat-reel.mp3", true);
 
     ArrayList<Track> tracklist = new ArrayList<>();
     private Image selectedImage;
@@ -63,7 +65,6 @@ public class DynamicBeat extends JFrame {
         setBackground(new Color(0, 0, 0, 0));
         setLayout(null);
 
-        Music introMusic = new Music("upbeat-reel.mp3", true);
         introMusic.start();
 
         tracklist.add(new Track("information title.png", "information.png",
@@ -80,7 +81,7 @@ public class DynamicBeat extends JFrame {
         exitButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                exitButton.setIcon(exitButtonEnterdImage);
+                exitButton.setIcon(exitButtonEnteredImage);
                 exitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
 
@@ -117,16 +118,7 @@ public class DynamicBeat extends JFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 // 게임 시작 이벤트 -> 나중에 로그인 창 띄우고 확인된 후에 넘어가도록 바꿔보기
-                introMusic.close();
-                selectTrack(0);
-                startButton.setVisible(false);
-                quitButton.setVisible(false);
-                leftButton.setVisible(true);
-                rightButton.setVisible(true);
-                easyButton.setVisible(true);
-                hardButton.setVisible(true);
-                background = new ImageIcon(Main.class.getResource("../images/mainBackground.jpg")).getImage();
-                isMainScreen = true;
+                enterMain();
             }
         });
         add(startButton);
@@ -213,7 +205,7 @@ public class DynamicBeat extends JFrame {
         easyButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                easyButton.setIcon(easyEnterdImage);
+                easyButton.setIcon(easyEnteredImage);
                 easyButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
 
@@ -239,7 +231,7 @@ public class DynamicBeat extends JFrame {
         hardButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                hardButton.setIcon(hardEnterdImage);
+                hardButton.setIcon(hardEnteredImage);
                 hardButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
 
@@ -257,6 +249,33 @@ public class DynamicBeat extends JFrame {
         });
         add(hardButton);
 
+        backButton.setVisible(false);
+        backButton.setBounds(20, 50, 60, 60);
+        backButton.setBorderPainted(false);
+        backButton.setContentAreaFilled(false);
+        backButton.setFocusPainted(false);
+        backButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                backButton.setIcon(backEnterdImage);
+                backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                backButton.setIcon(backBasicImage);
+                backButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // 메인화면으로 돌아가는 이벤트
+                backMain();
+            }
+        });
+        add(backButton);
+
+        JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menuBar.png")));
         menuBar.setBounds(0, 0, 1280, 30);
         menuBar.addMouseListener(new MouseAdapter() {
             @Override
@@ -286,8 +305,8 @@ public class DynamicBeat extends JFrame {
     // -> 이에 paint 와 repaint 를 통해 계속해서 background 이미지를 띄워주게 됨
     // 이런 기법을 더블 버퍼링 기법 이라고 함 : 버퍼에 이미지를 담아서 계속해서 갱신해줌
     public void paint(Graphics g) {
-        screenImage = createImage(SCREEN_WIDTH, SCREEN_HEIGHT);
-        screenGraphic = screenImage.getGraphics();
+        Image screenImage = createImage(SCREEN_WIDTH, SCREEN_HEIGHT);
+        Graphics screenGraphic = screenImage.getGraphics();
         screenDraw(screenGraphic);
         g.drawImage(screenImage, 0, 0, null);
     }
@@ -340,5 +359,30 @@ public class DynamicBeat extends JFrame {
         easyButton.setVisible(false);
         hardButton.setVisible(false);
         background = new ImageIcon(Main.class.getResource("../images/" + tracklist.get(nowSelected).getGameImage())).getImage();
+        backButton.setVisible(true);
+    }
+
+    public void backMain() {
+        isMainScreen = true;
+        leftButton.setVisible(true);
+        rightButton.setVisible(true);
+        easyButton.setVisible(true);
+        hardButton.setVisible(true);
+        background = new ImageIcon(Main.class.getResource("../images/mainBackground.jpg")).getImage();
+        backButton.setVisible(false);
+        selectTrack(nowSelected);
+    }
+
+    public void enterMain() {
+        startButton.setVisible(false);
+        quitButton.setVisible(false);
+        background = new ImageIcon(Main.class.getResource("../images/mainBackground.jpg")).getImage();
+        isMainScreen = true;
+        leftButton.setVisible(true);
+        rightButton.setVisible(true);
+        easyButton.setVisible(true);
+        hardButton.setVisible(true);
+        introMusic.close();
+        selectTrack(0);
     }
 }
