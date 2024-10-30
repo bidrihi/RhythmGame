@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
 
 public class DynamicBeat extends JFrame {
     public static final int SCREEN_WIDTH = 1280;
@@ -27,7 +28,23 @@ public class DynamicBeat extends JFrame {
     private JButton startButton = new JButton(startButtonBasicImage);
     private JButton quitButton = new JButton(quitButtonBasicImage);
 
+    private ImageIcon leftEnterdImage = new ImageIcon(Main.class.getResource("../images/leftEntered.png"));
+    private ImageIcon leftBasicImage = new ImageIcon(Main.class.getResource("../images/leftBasic.png"));
+    private ImageIcon rightEnterdImage = new ImageIcon(Main.class.getResource("../images/rightEntered.png"));
+    private ImageIcon rightBasicImage = new ImageIcon(Main.class.getResource("../images/rightBasic.png"));
+    private JButton leftButton = new JButton(leftBasicImage);
+    private JButton rightButton = new JButton(rightBasicImage);
+
+
     private int mouseX, mouseY;
+
+    private boolean isMainScreen = false;
+
+    ArrayList<Track> tracklist = new ArrayList<>();
+    private Image selectedImage;
+    private Image titleImage;
+    private Music selectedMusic;
+    private int nowSelected = 0;
 
     public DynamicBeat() {
         setUndecorated(true); // 기본 메뉴바 숨기고 바뀐 메뉴바로 변경
@@ -39,6 +56,16 @@ public class DynamicBeat extends JFrame {
         setVisible(true);
         setBackground(new Color(0, 0, 0, 0));
         setLayout(null);
+
+        Music introMusic = new Music("upbeat-reel.mp3", true);
+        introMusic.start();
+
+        tracklist.add(new Track("information title.png", "information.png",
+                "information ingame.png", "information selected.mp3", "information.mp3"));
+        tracklist.add(new Track("sunset road title.png", "sunset road.png",
+                "sunset road ingame.png", "sunset road selected.mp3", "sunset road.mp3"));
+        tracklist.add(new Track("tokyo cafe title.png", "tokyo cafe.png",
+                "tokyo cafe ingame.png", "tokyo cafe selected.mp3", "tokyo cafe.mp3"));
 
         exitButton.setBounds(1245, 0, 30, 30);
         exitButton.setBorderPainted(false);
@@ -84,9 +111,14 @@ public class DynamicBeat extends JFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 // 게임 시작 이벤트 -> 나중에 로그인 창 띄우고 확인된 후에 넘어가도록 바꿔보기
+                introMusic.close();
+                selectTrack(0);
                 startButton.setVisible(false);
                 quitButton.setVisible(false);
+                leftButton.setVisible(true);
+                rightButton.setVisible(true);
                 background = new ImageIcon(Main.class.getResource("../images/mainBackground.jpg")).getImage();
+                isMainScreen = true;
             }
         });
         add(startButton);
@@ -115,6 +147,56 @@ public class DynamicBeat extends JFrame {
         });
         add(quitButton);
 
+        leftButton.setVisible(false);
+        leftButton.setBounds(140, 310, 60, 60);
+        leftButton.setBorderPainted(false);
+        leftButton.setContentAreaFilled(false);
+        leftButton.setFocusPainted(false);
+        leftButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                leftButton.setIcon(leftEnterdImage);
+                leftButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                leftButton.setIcon(leftBasicImage);
+                leftButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                selectLeft();
+            }
+        });
+        add(leftButton);
+
+        rightButton.setVisible(false);
+        rightButton.setBounds(1080, 310, 60, 60);
+        rightButton.setBorderPainted(false);
+        rightButton.setContentAreaFilled(false);
+        rightButton.setFocusPainted(false);
+        rightButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                rightButton.setIcon(rightEnterdImage);
+                rightButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                rightButton.setIcon(rightBasicImage);
+                rightButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                selectRight();
+            }
+        });
+        add(rightButton);
+
         menuBar.setBounds(0, 0, 1280, 30);
         menuBar.addMouseListener(new MouseAdapter() {
             @Override
@@ -132,9 +214,6 @@ public class DynamicBeat extends JFrame {
             }
         });
         add(menuBar);
-
-        Music introMusic = new Music("upbeat-reel.mp3", true);
-        introMusic.start();
     }
 
     // paint 메서드는 JFrame 에서 상속받아서 화면을 그릴때 가장 먼저 실행되는 함수
@@ -155,7 +234,39 @@ public class DynamicBeat extends JFrame {
 
     public void screenDraw(Graphics g) {
         g.drawImage(background, 0, 0, null);
+        if (isMainScreen) {
+            g.drawImage(selectedImage, 340, 100, null);
+            g.drawImage(titleImage, 340, 550, null);
+        }
         paintComponents(g); // 이미지를 단순히 그려주는 것 이외에 JLabel 처럼 추가된 요소를 그리는 것
         this.repaint();
+    }
+
+    public void selectTrack(int nowSelected) {
+        if (selectedMusic != null) {
+            selectedMusic.close();
+        }
+        titleImage = new ImageIcon(Main.class.getResource("../images/" + tracklist.get(nowSelected).getTitleImage())).getImage();
+        selectedImage = new ImageIcon(Main.class.getResource("../images/" + tracklist.get(nowSelected).getStartImage())).getImage();
+        selectedMusic = new Music(tracklist.get(nowSelected).getStartMusic(), true);
+        selectedMusic.start();
+    }
+
+    public void selectLeft() {
+        if (nowSelected == 0) {
+            nowSelected = tracklist.size() - 1;
+        } else {
+            nowSelected--;
+        }
+        selectTrack(nowSelected);
+    }
+
+    public void selectRight() {
+        if (nowSelected == tracklist.size() - 1) {
+            nowSelected = 0;
+        } else {
+            nowSelected++;
+        }
+        selectTrack(nowSelected);
     }
 }
