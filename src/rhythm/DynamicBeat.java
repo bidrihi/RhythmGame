@@ -17,16 +17,16 @@ public class DynamicBeat extends JFrame {
     private final ImageIcon exitButtonBasicImage = new ImageIcon(Main.class.getResource("../images/exit.png"));
     private final JButton exitButton = new JButton(exitButtonBasicImage);
 
-    private final ImageIcon startButtonEnterdImage = new ImageIcon(Main.class.getResource("../images/startButtonEntered.png"));
+    private final ImageIcon startButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/startButtonEntered.png"));
     private final ImageIcon startButtonBasicImage = new ImageIcon(Main.class.getResource("../images/startButtonBasic.png"));
-    private final ImageIcon quitButtonEnterdImage = new ImageIcon(Main.class.getResource("../images/quitButtonEntered.png"));
+    private final ImageIcon quitButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/quitButtonEntered.png"));
     private final ImageIcon quitButtonBasicImage = new ImageIcon(Main.class.getResource("../images/quitButtonBasic.png"));
     private final JButton startButton = new JButton(startButtonBasicImage);
     private final JButton quitButton = new JButton(quitButtonBasicImage);
 
-    private final ImageIcon leftEnterdImage = new ImageIcon(Main.class.getResource("../images/leftEntered.png"));
+    private final ImageIcon leftEnteredImage = new ImageIcon(Main.class.getResource("../images/leftEntered.png"));
     private final ImageIcon leftBasicImage = new ImageIcon(Main.class.getResource("../images/leftBasic.png"));
-    private final ImageIcon rightEnterdImage = new ImageIcon(Main.class.getResource("../images/rightEntered.png"));
+    private final ImageIcon rightEnteredImage = new ImageIcon(Main.class.getResource("../images/rightEntered.png"));
     private final ImageIcon rightBasicImage = new ImageIcon(Main.class.getResource("../images/rightBasic.png"));
     private final JButton leftButton = new JButton(leftBasicImage);
     private final JButton rightButton = new JButton(rightBasicImage);
@@ -38,10 +38,16 @@ public class DynamicBeat extends JFrame {
     private final JButton easyButton = new JButton(easyBasicImage);
     private final JButton hardButton = new JButton(hardBasicImage);
 
-    private final ImageIcon backEnterdImage = new ImageIcon(Main.class.getResource("../images/backButtonEntered.png"));
+    private final ImageIcon backEnteredImage = new ImageIcon(Main.class.getResource("../images/backButtonEntered.png"));
     private final ImageIcon backBasicImage = new ImageIcon(Main.class.getResource("../images/backButtonBasic.png"));
     private final JButton backButton = new JButton(backBasicImage);
 
+    private final Image gameInfoImage = new ImageIcon(Main.class.getResource("../images/gameInfo.png")).getImage();
+    private final Image judgementLineImage = new ImageIcon(Main.class.getResource("../images/judgementLine.png")).getImage();
+    private final Image noteRouteImage = new ImageIcon(Main.class.getResource("../images/noteRoute.png")).getImage();
+    private final Image noteRouteLineImage = new ImageIcon(Main.class.getResource("../images/noteRouteLine.png")).getImage();
+    private Image noteBasicImage = new ImageIcon(Main.class.getResource("../images/noteBasic.jpg")).getImage();
+    private boolean isGameScreen = false;
 
     private int mouseX, mouseY;
 
@@ -105,7 +111,7 @@ public class DynamicBeat extends JFrame {
         startButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                startButton.setIcon(startButtonEnterdImage);
+                startButton.setIcon(startButtonEnteredImage);
                 startButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
 
@@ -130,7 +136,7 @@ public class DynamicBeat extends JFrame {
         quitButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                quitButton.setIcon(quitButtonEnterdImage);
+                quitButton.setIcon(quitButtonEnteredImage);
                 quitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
 
@@ -155,7 +161,7 @@ public class DynamicBeat extends JFrame {
         leftButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                leftButton.setIcon(leftEnterdImage);
+                leftButton.setIcon(leftEnteredImage);
                 leftButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
 
@@ -180,7 +186,7 @@ public class DynamicBeat extends JFrame {
         rightButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                rightButton.setIcon(rightEnterdImage);
+                rightButton.setIcon(rightEnteredImage);
                 rightButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
 
@@ -257,7 +263,7 @@ public class DynamicBeat extends JFrame {
         backButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                backButton.setIcon(backEnterdImage);
+                backButton.setIcon(backEnteredImage);
                 backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
 
@@ -307,15 +313,60 @@ public class DynamicBeat extends JFrame {
     public void paint(Graphics g) {
         Image screenImage = createImage(SCREEN_WIDTH, SCREEN_HEIGHT);
         Graphics screenGraphic = screenImage.getGraphics();
-        screenDraw(screenGraphic);
+        screenDraw((Graphics2D) screenGraphic);
         g.drawImage(screenImage, 0, 0, null);
     }
 
-    public void screenDraw(Graphics g) {
+    public void screenDraw(Graphics2D g) {
         g.drawImage(background, 0, 0, null);
         if (isMainScreen) {
             g.drawImage(selectedImage, 340, 100, null);
             g.drawImage(titleImage, 340, 550, null);
+        }
+        if (isGameScreen) {
+            g.drawImage(noteRouteImage, 228, 30, null);
+            g.drawImage(noteRouteImage, 332, 30, null);
+            g.drawImage(noteRouteImage, 436, 30, null);
+            g.drawImage(noteRouteImage, 540, 30, null);
+            g.drawImage(noteRouteImage, 640, 30, null);
+            g.drawImage(noteRouteImage, 744, 30, null);
+            g.drawImage(noteRouteImage, 848, 30, null);
+            g.drawImage(noteRouteImage, 952, 30, null);
+            g.drawImage(noteRouteLineImage, 224, 30, null);
+            g.drawImage(noteRouteLineImage, 328, 30, null);
+            g.drawImage(noteRouteLineImage, 432, 30, null);
+            g.drawImage(noteRouteLineImage, 536, 30, null);
+            g.drawImage(noteRouteLineImage, 740, 30, null);
+            g.drawImage(noteRouteLineImage, 844, 30, null);
+            g.drawImage(noteRouteLineImage, 948, 30, null);
+            g.drawImage(noteRouteLineImage, 1052, 30, null);
+            g.drawImage(gameInfoImage, 0, 660, null);
+            g.drawImage(judgementLineImage, 0, 580, null);
+            g.drawImage(noteBasicImage, 228, 120, null);
+            g.drawImage(noteBasicImage, 332, 580, null);
+            g.drawImage(noteBasicImage, 436, 500, null);
+            g.drawImage(noteBasicImage, 540, 340, null);
+            g.drawImage(noteBasicImage, 640, 340, null);
+            g.drawImage(noteBasicImage, 744, 325, null);
+            g.drawImage(noteBasicImage, 848, 305, null);
+            g.drawImage(noteBasicImage, 952, 305, null);
+            g.setColor(Color.white);
+            g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            g.setFont(new Font("Arial", Font.BOLD, 30));
+            g.drawString("INFORMATION", 20, 702);
+            g.drawString("Easy", 1190, 702);
+            g.setFont(new Font("Arial", Font.PLAIN, 26));
+            g.setColor(Color.DARK_GRAY);
+            g.drawString("S", 270, 609);
+            g.drawString("D", 374, 609);
+            g.drawString("F", 478, 609);
+            g.drawString("Space Bar", 580, 609);
+            g.drawString("J", 784, 609);
+            g.drawString("K", 889, 609);
+            g.drawString("L", 993, 609);
+            g.setFont(new Font("Elephant", Font.BOLD, 30));
+            g.drawString("000000", 565, 702);
+
         }
         paintComponents(g); // 이미지를 단순히 그려주는 것 이외에 JLabel 처럼 추가된 요소를 그리는 것
         this.repaint();
@@ -360,6 +411,7 @@ public class DynamicBeat extends JFrame {
         hardButton.setVisible(false);
         background = new ImageIcon(Main.class.getResource("../images/" + tracklist.get(nowSelected).getGameImage())).getImage();
         backButton.setVisible(true);
+        isGameScreen = true;
     }
 
     public void backMain() {
@@ -371,6 +423,7 @@ public class DynamicBeat extends JFrame {
         background = new ImageIcon(Main.class.getResource("../images/mainBackground.jpg")).getImage();
         backButton.setVisible(false);
         selectTrack(nowSelected);
+        isGameScreen = false;
     }
 
     public void enterMain() {
