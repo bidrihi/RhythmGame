@@ -58,6 +58,13 @@ public class DynamicBeat extends JFrame {
     public static Game game;
 
     public DynamicBeat() {
+        tracklist.add(new Track("information title.png", "information.png",
+                "information ingame.png", "information selected.mp3", "information.mp3", "INFORMATION"));
+        tracklist.add(new Track("sunset road title.png", "sunset road.png",
+                "sunset road ingame.png", "sunset road selected.mp3", "sunset road.mp3", "SUNSET ROAD"));
+        tracklist.add(new Track("tokyo cafe title.png", "tokyo cafe.png",
+                "tokyo cafe ingame.png", "tokyo cafe selected.mp3", "tokyo cafe.mp3", "TOKYO CAFE"));
+
         setUndecorated(true); // 기본 메뉴바 숨기고 바뀐 메뉴바로 변경
         setTitle("Dynamic Beat");
         setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -71,13 +78,6 @@ public class DynamicBeat extends JFrame {
         addKeyListener(new KeyListener());
 
         introMusic.start();
-
-        tracklist.add(new Track("information title.png", "information.png",
-                "information ingame.png", "information selected.mp3", "information.mp3", "INFORMATION"));
-        tracklist.add(new Track("sunset road title.png", "sunset road.png",
-                "sunset road ingame.png", "sunset road selected.mp3", "sunset road.mp3", "SUNSET ROAD"));
-        tracklist.add(new Track("tokyo cafe title.png", "tokyo cafe.png",
-                "tokyo cafe ingame.png", "tokyo cafe selected.mp3", "tokyo cafe.mp3", "TOKYO CAFE"));
 
         exitButton.setBounds(1245, 0, 30, 30);
         exitButton.setBorderPainted(false);
@@ -326,6 +326,11 @@ public class DynamicBeat extends JFrame {
             game.screenDraw(g);
         }
         paintComponents(g); // 이미지를 단순히 그려주는 것 이외에 JLabel 처럼 추가된 요소를 그리는 것
+        try {
+            Thread.sleep(5);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         this.repaint();
     }
 
@@ -369,8 +374,9 @@ public class DynamicBeat extends JFrame {
         background = new ImageIcon(Main.class.getResource("../images/" + tracklist.get(nowSelected).getGameImage())).getImage();
         backButton.setVisible(true);
         isGameScreen = true;
-        setFocusable(true);
         game = new Game(tracklist.get(nowSelected).getTitleName(), difficulty, tracklist.get(nowSelected).getGameMusic());
+        game.start();
+        setFocusable(true);
     }
 
     public void backMain() {

@@ -2,9 +2,9 @@ package rhythm;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Game extends Thread {
-    private final Image noteBasicImage = new ImageIcon(Main.class.getResource("../images/noteBasic.jpg")).getImage();
     private final Image noteRouteLineImage = new ImageIcon(Main.class.getResource("../images/noteRouteLine.png")).getImage();
     private final Image judgementLineImage = new ImageIcon(Main.class.getResource("../images/judgementLine.png")).getImage();
     private final Image gameInfoImage = new ImageIcon(Main.class.getResource("../images/gameInfo.png")).getImage();
@@ -22,12 +22,13 @@ public class Game extends Thread {
     private String musicTitle;
     private Music gameMusic;
 
+    ArrayList<Note> noteList = new ArrayList<>();
+
     public Game(String titleName, String difficulty, String musicTitle) {
         this.titleName = titleName;
         this.difficulty = difficulty;
         this.musicTitle = musicTitle;
         gameMusic = new Music(this.musicTitle, false);
-        gameMusic.start();
     }
 
     public void screenDraw(Graphics2D g) {
@@ -49,14 +50,12 @@ public class Game extends Thread {
         g.drawImage(noteRouteLineImage, 1052, 30, null);
         g.drawImage(gameInfoImage, 0, 660, null);
         g.drawImage(judgementLineImage, 0, 580, null);
-        g.drawImage(noteBasicImage, 228, 120, null);
-        g.drawImage(noteBasicImage, 332, 580, null);
-        g.drawImage(noteBasicImage, 436, 500, null);
-        g.drawImage(noteBasicImage, 540, 340, null);
-        g.drawImage(noteBasicImage, 640, 340, null);
-        g.drawImage(noteBasicImage, 744, 325, null);
-        g.drawImage(noteBasicImage, 848, 305, null);
-        g.drawImage(noteBasicImage, 952, 305, null);
+
+        for (int i = 0; i < noteList.size(); i++) {
+            Note note = noteList.get(i);
+            note.screenDraw(g);
+        }
+
         g.setColor(Color.white);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g.setFont(new Font("Arial", Font.BOLD, 30));
@@ -73,7 +72,6 @@ public class Game extends Thread {
         g.drawString("L", 993, 609);
         g.setFont(new Font("Elephant", Font.BOLD, 30));
         g.drawString("000000", 565, 702);
-
     }
 
     public void pressS() {
@@ -150,10 +148,63 @@ public class Game extends Thread {
 
     @Override
     public void run() {
+        dropNotes();
     }
 
     public void close() {
         gameMusic.close();
         this.interrupt();
+    }
+
+    public void dropNotes() {
+        Beat[] beats = null;
+        if (titleName.equalsIgnoreCase("information")) {
+            int startTime = 4460 - Note.REACH_TIME * 1000;
+            int gap = 125;
+            beats = new Beat[] {
+                    new Beat(startTime, "Space"),
+                    new Beat(startTime + gap * 2, "Space"),
+                    new Beat(startTime + gap * 4, "S"),
+                    new Beat(startTime + gap * 6, "D"),
+                    new Beat(startTime + gap * 8, "F"),
+                    new Beat(startTime + gap * 10, "J"),
+                    new Beat(startTime + gap * 12, "K"),
+                    new Beat(startTime + gap * 14, "L"),
+                    new Beat(startTime + gap * 16, "L"),
+                    new Beat(startTime + gap * 18, "K"),
+                    new Beat(startTime + gap * 20, "J"),
+                    new Beat(startTime + gap * 22, "D"),
+                    new Beat(startTime + gap * 24, "F"),
+                    new Beat(startTime + gap * 26, "S"),
+            };
+        } else if (titleName.equalsIgnoreCase("sunset road")) {
+            int startTime = 1000 - Note.REACH_TIME * 1000;
+            beats = new Beat[] {
+                    new Beat(startTime, "Space")
+            };
+        } else if (titleName.equalsIgnoreCase("tokyo cafe")) {
+            int startTime = 1000 - Note.REACH_TIME * 1000;
+            beats = new Beat[] {
+                    new Beat(startTime, "Space")
+            };
+        }
+        int i = 0;
+        gameMusic.start();
+        while (i < beats.length && !isInterrupted()) {
+            boolean dropped = false;
+            if (beats[i].getTime() <= gameMusic.getTime()) {
+                Note note = new Note(beats[i].getNoteName());
+                note.start();
+                noteList.add(note);
+                i++;
+            }
+            if (!dropped) {
+                try {
+                    Thread.sleep(5);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
