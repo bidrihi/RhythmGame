@@ -55,7 +55,7 @@ public class DynamicBeat extends JFrame {
     private Music selectedMusic;
     private int nowSelected = 0;
 
-    public static Game game = new Game();
+    public static Game game;
 
     public DynamicBeat() {
         setUndecorated(true); // 기본 메뉴바 숨기고 바뀐 메뉴바로 변경
@@ -73,11 +73,11 @@ public class DynamicBeat extends JFrame {
         introMusic.start();
 
         tracklist.add(new Track("information title.png", "information.png",
-                "information ingame.png", "information selected.mp3", "information.mp3"));
+                "information ingame.png", "information selected.mp3", "information.mp3", "INFORMATION"));
         tracklist.add(new Track("sunset road title.png", "sunset road.png",
-                "sunset road ingame.png", "sunset road selected.mp3", "sunset road.mp3"));
+                "sunset road ingame.png", "sunset road selected.mp3", "sunset road.mp3", "SUNSET ROAD"));
         tracklist.add(new Track("tokyo cafe title.png", "tokyo cafe.png",
-                "tokyo cafe ingame.png", "tokyo cafe selected.mp3", "tokyo cafe.mp3"));
+                "tokyo cafe ingame.png", "tokyo cafe selected.mp3", "tokyo cafe.mp3", "TOKYO CAFE"));
 
         exitButton.setBounds(1245, 0, 30, 30);
         exitButton.setBorderPainted(false);
@@ -223,7 +223,7 @@ public class DynamicBeat extends JFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 //난이도 쉬움 이벤트
-                gameStart(nowSelected, "easy");
+                gameStart(nowSelected, "Easy");
             }
         });
         add(easyButton);
@@ -249,7 +249,7 @@ public class DynamicBeat extends JFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 //난이도 어려움 이벤트
-                gameStart(nowSelected, "hard");
+                gameStart(nowSelected, "Hard");
             }
         });
         add(hardButton);
@@ -370,6 +370,7 @@ public class DynamicBeat extends JFrame {
         backButton.setVisible(true);
         isGameScreen = true;
         setFocusable(true);
+        game = new Game(tracklist.get(nowSelected).getTitleName(), difficulty, tracklist.get(nowSelected).getGameMusic());
     }
 
     public void backMain() {
@@ -382,6 +383,7 @@ public class DynamicBeat extends JFrame {
         backButton.setVisible(false);
         selectTrack(nowSelected);
         isGameScreen = false;
+        game.close();
     }
 
     public void enterMain() {
