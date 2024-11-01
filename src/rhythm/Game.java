@@ -39,6 +39,7 @@ public class Game extends Thread {
 
     int combo = 0;
     int hightCombo = 0;
+    private Image comboImage = new ImageIcon(Main.class.getResource("../images/combo.png")).getImage();
 
     public Game(String titleName, String difficulty, String musicTitle) {
         this.titleName = titleName;
@@ -71,6 +72,8 @@ public class Game extends Thread {
             Note note = noteList.get(i);
             if (note.getY() > 620) {
                 judgeImage = new ImageIcon(Main.class.getResource("../images/judgeMiss.png")).getImage();
+                score -= 10;
+                combo = 0;
             }
             if (!note.isProceeded()) {
                 noteList.remove(i);
@@ -85,6 +88,15 @@ public class Game extends Thread {
         g.setFont(new Font("Arial", Font.BOLD, 30));
         g.drawString(titleName, 20, 702);
         g.drawString(difficulty, 1190, 702);
+
+        if (highScore < score) highScore = score;
+        if (hightCombo < combo) hightCombo = combo;
+
+        if (score < 0) {
+            g.drawString(String.valueOf(0), 620, 702);
+        } else g.drawString(String.valueOf(score), 620, 702);
+        g.drawString(String.valueOf(highScore), 750, 702);
+
         g.setFont(new Font("Arial", Font.PLAIN, 26));
         g.setColor(Color.DARK_GRAY);
         g.drawString("S", 270, 609);
@@ -94,8 +106,6 @@ public class Game extends Thread {
         g.drawString("J", 784, 609);
         g.drawString("K", 889, 609);
         g.drawString("L", 993, 609);
-        g.setFont(new Font("Elephant", Font.BOLD, 30));
-        g.drawString("000000", 565, 702);
         g.drawImage(judgeImage, 450, 420, null);
         g.drawImage(blueFlareImage, 240, 270, null);
         g.drawImage(keyPadSImage, 228, 580, null);
