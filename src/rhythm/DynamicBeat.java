@@ -57,7 +57,13 @@ public class DynamicBeat extends JFrame {
 
     public static Game game;
 
-    public DynamicBeat() {
+    LoginDAO loginDAO;
+
+    public DynamicBeat(LoginDAO loginDAO) {
+        this.loginDAO = loginDAO;
+    }
+
+    public void musicStart() {
         tracklist.add(new Track("information title.png", "information.png",
                 "information ingame.png", "information selected.mp3", "information.mp3", "INFORMATION"));
         tracklist.add(new Track("sunset road title.png", "sunset road.png",
@@ -377,6 +383,8 @@ public class DynamicBeat extends JFrame {
         game = new Game(tracklist.get(nowSelected).getTitleName(), difficulty, tracklist.get(nowSelected).getGameMusic());
         game.start();
         setFocusable(true);
+        game.score = 0;
+        game.combo = 0;
     }
 
     public void backMain() {

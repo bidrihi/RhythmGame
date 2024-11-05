@@ -38,7 +38,7 @@ public class Game extends Thread {
     int highScore = 0;
 
     int combo = 0;
-    int hightCombo = 0;
+    int highCombo = 0;
     private Image comboImage = new ImageIcon(Main.class.getResource("../images/combo.png")).getImage();
 
     public Game(String titleName, String difficulty, String musicTitle) {
@@ -90,12 +90,17 @@ public class Game extends Thread {
         g.drawString(difficulty, 1190, 702);
 
         if (highScore < score) highScore = score;
-        if (hightCombo < combo) hightCombo = combo;
+        if (highCombo < combo) highCombo = combo;
 
         if (score < 0) {
-            g.drawString(String.valueOf(0), 620, 702);
-        } else g.drawString(String.valueOf(score), 620, 702);
-        g.drawString(String.valueOf(highScore), 750, 702);
+            g.drawString(String.valueOf(0), 600, 702);
+        } else g.drawString(String.valueOf(score), 600, 702);
+        g.drawString(String.valueOf(highScore), 800, 702);
+
+        g.drawImage(comboImage, 1070,150,null);
+        g.setColor(Color.WHITE);
+        g.drawString(String.valueOf(combo), 1150, 270);
+        g.drawString(String.valueOf(highCombo), 1150, 350);
 
         g.setFont(new Font("Arial", Font.PLAIN, 26));
         g.setColor(Color.DARK_GRAY);
@@ -572,16 +577,28 @@ public class Game extends Thread {
         }
         if (judge.equals("Miss")) {
             judgeImage = new ImageIcon(Main.class.getResource("../images/judgeMiss.png")).getImage();
+            score -= 10;
+            combo = 0;
         } else if (judge.equals("Late")) {
             judgeImage = new ImageIcon(Main.class.getResource("../images/judgeLate.png")).getImage();
+            score += 5;
+            combo++;
         } else if (judge.equals("Good")) {
             judgeImage = new ImageIcon(Main.class.getResource("../images/judgeGood.png")).getImage();
+            score += 20;
+            combo++;
         } else if (judge.equals("Great")) {
             judgeImage = new ImageIcon(Main.class.getResource("../images/judgeGreat.png")).getImage();
+            score += 30;
+            combo++;
         } else if (judge.equals("Perfect")) {
             judgeImage = new ImageIcon(Main.class.getResource("../images/judgePerfect.png")).getImage();
+            score += 50;
+            combo +=1;
         } else if (judge.equals("Early")) {
             judgeImage = new ImageIcon(Main.class.getResource("../images/judgeEarly.png")).getImage();
+            score += 5;
+            combo++;
         }
     }
 }
