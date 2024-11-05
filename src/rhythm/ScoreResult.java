@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ScoreResult extends Thread {
-    private Image scoreResult = new ImageIcon(getClass().getResource("../images/scoreResult.png")).getImage();
+    private final Image scoreResult = new ImageIcon(getClass().getResource("../images/scoreResult.png")).getImage();
     Graphics2D g;
 
     public ScoreResult(Graphics2D g) {
@@ -47,6 +47,6 @@ public class ScoreResult extends Thread {
     }
 
     public void close() {
-        interrupt();;
+        interrupt();
     }
 }

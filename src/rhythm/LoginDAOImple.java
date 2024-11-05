@@ -10,16 +10,8 @@ public class LoginDAOImple implements LoginDAO, OracleQuery {
     private String loginPW;
     private int getMemberNo;
 
-    public String getLoginID() {
-        return loginID;
-    }
-
     public void setLoginID(String loginID) {
         this.loginID = loginID;
-    }
-
-    public String getLoginPW() {
-        return loginPW;
     }
 
     public void setLoginPW(String loginPW) {
@@ -156,5 +148,10 @@ public class LoginDAOImple implements LoginDAO, OracleQuery {
             }
         }
         return result;
+    }
+
+    @Override
+    public NoteVO selectNote(int trackNo) {
+        return null;
     }
 }

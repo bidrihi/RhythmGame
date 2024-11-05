@@ -6,6 +6,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class DynamicBeat extends JFrame {
     public static final int SCREEN_WIDTH = 1280;
@@ -57,6 +59,9 @@ public class DynamicBeat extends JFrame {
 
     public static Game game;
 
+    private boolean isResult = false;
+    ScoreResult scoreResult;
+
     LoginDAO loginDAO;
 
     public DynamicBeat(LoginDAO loginDAO) {
@@ -64,12 +69,18 @@ public class DynamicBeat extends JFrame {
     }
 
     public void musicStart() {
-        tracklist.add(new Track("information title.png", "information.png",
-                "information ingame.png", "information selected.mp3", "information.mp3", "INFORMATION"));
-        tracklist.add(new Track("sunset road title.png", "sunset road.png",
-                "sunset road ingame.png", "sunset road selected.mp3", "sunset road.mp3", "SUNSET ROAD"));
-        tracklist.add(new Track("tokyo cafe title.png", "tokyo cafe.png",
-                "tokyo cafe ingame.png", "tokyo cafe selected.mp3", "tokyo cafe.mp3", "TOKYO CAFE"));
+        tracklist.add(new Track(1, "information title.png", "information.png",
+                "information ingame.png", "information selected.mp3", "information.mp3", "INFORMATION", 187000));
+        tracklist.add(new Track(2, "information title.png", "information.png",
+                "information ingame.png", "information selected.mp3", "information.mp3", "INFORMATION", 187000));
+        tracklist.add(new Track(3, "sunset road title.png", "sunset road.png",
+                "sunset road ingame.png", "sunset road selected.mp3", "sunset road.mp3", "SUNSET ROAD", 184000));
+        tracklist.add(new Track(4, "sunset road title.png", "sunset road.png",
+                "sunset road ingame.png", "sunset road selected.mp3", "sunset road.mp3", "SUNSET ROAD", 184000));
+        tracklist.add(new Track(5, "tokyo cafe title.png", "tokyo cafe.png",
+                "tokyo cafe ingame.png", "tokyo cafe selected.mp3", "tokyo cafe.mp3", "TOKYO CAFE", 153000));
+        tracklist.add(new Track(6, "tokyo cafe title.png", "tokyo cafe.png",
+                "tokyo cafe ingame.png", "tokyo cafe selected.mp3", "tokyo cafe.mp3", "TOKYO CAFE", 153000));
 
         setUndecorated(true); // 기본 메뉴바 숨기고 바뀐 메뉴바로 변경
         setTitle("Dynamic Beat");
@@ -331,6 +342,10 @@ public class DynamicBeat extends JFrame {
         if (isGameScreen) {
             game.screenDraw(g);
         }
+        if (isResult) {
+            scoreResult = new ScoreResult(g);
+            scoreResult.start();
+        }
         paintComponents(g); // 이미지를 단순히 그려주는 것 이외에 JLabel 처럼 추가된 요소를 그리는 것
         try {
             Thread.sleep(5);
@@ -382,9 +397,20 @@ public class DynamicBeat extends JFrame {
         isGameScreen = true;
         game = new Game(tracklist.get(nowSelected).getTitleName(), difficulty, tracklist.get(nowSelected).getGameMusic());
         game.start();
-        setFocusable(true);
         game.score = 0;
         game.combo = 0;
+
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                isResult = true;
+                loginDAO.scoreUpdate(game.score, game.combo, tracklist.get(nowSelected).getTitleName());
+            }
+        };
+        timer.schedule(task, tracklist.get(nowSelected).getTrackTime());
+
+        setFocusable(true);
     }
 
     public void backMain() {
@@ -397,6 +423,10 @@ public class DynamicBeat extends JFrame {
         backButton.setVisible(false);
         selectTrack(nowSelected);
         isGameScreen = false;
+        isResult = false;
+        if (scoreResult != null) {
+            scoreResult.close();
+        }
         game.close();
     }
 
