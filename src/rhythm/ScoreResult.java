@@ -12,9 +12,6 @@ public class ScoreResult extends Thread {
     }
 
     public void screenDraw(Graphics2D g) {
-        g.setColor(Color.black);
-        g.fillRect(0, 0, 1280, 720);
-
         String grade = null;
 
         int totalScore = DynamicBeat.game.score;

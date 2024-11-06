@@ -41,7 +41,7 @@ public class RegisterFrame extends JFrame {
         jbtnRegister.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MemberVO vo = new MemberVO(0, jlbID.getText(), jlbPW.getText(), jlbName.getText(), jlbEmail.getText());
+                MemberVO vo = new MemberVO(0, jtfID.getText(), String.valueOf(jtfPW.getPassword()), jtfName.getText(), jtfEmail.getText());
                 int result = loginDB.memberInsert(vo);
 
                 if (result == 0) {

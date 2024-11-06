@@ -27,34 +27,26 @@ public class Note extends Thread {
     }
 
     public Note(String noteType) {
-        switch (noteType) {
-            case "S":
-                x = 228;
-                break;
-            case "D":
-                x = 332;
-                break;
-            case "F":
-                x = 436;
-                break;
-            case "Space":
-                x = 540;
-                break;
-            case "J":
-                x = 744;
-                break;
-            case "K":
-                x = 848;
-                break;
-            case "L":
-                x = 952;
-                break;
+        if (noteType.equals("S")) {
+            x = 228;
+        } else if (noteType.equals("D")) {
+            x = 332;
+        } else if (noteType.equals("F")) {
+            x = 436;
+        } else if (noteType.equalsIgnoreCase("Space")) {
+            x = 540;
+        } else if (noteType.equals("J")) {
+            x = 744;
+        } else if (noteType.equals("K")) {
+            x = 848;
+        } else if (noteType.equals("L")) {
+            x = 952;
         }
         this.noteType = noteType;
     }
 
     public void screenDraw(Graphics2D g) {
-        if (!noteType.equals("Space")) {
+        if (!noteType.equalsIgnoreCase("Space")) {
             g.drawImage(noteBasicImage, x, y, null);
         } else {
             g.drawImage(noteBasicImage, x, y, null);
@@ -65,7 +57,6 @@ public class Note extends Thread {
     public void drop() {
         y += NOTE_SPEED;
         if (y > 620) {
-            System.out.println("Miss");
             close();
         }
     }
@@ -89,18 +80,25 @@ public class Note extends Thread {
 
     public String judge() {
         if (y >= 613) {
+            close();
             return "Late";
         } else if (y >= 600) {
+            close();
             return "Good";
         } else if (y >= 587) {
+            close();
             return "Great";
         } else if (y >= 573) {
+            close();
             return "Perfect";
         } else if (y >= 565) {
+            close();
             return "Great";
         } else if (y >= 550) {
+            close();
             return "Good";
         } else if (y >= 530) {
+            close();
             return "Early";
         }
         return "None";

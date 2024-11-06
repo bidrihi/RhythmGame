@@ -30,14 +30,8 @@ public class LoginFrame extends JFrame {
         jlbPW.setBounds(150, 100, 60, 20);
         jp.add(jlbPW);
 
-        jtfID = new JTextField("ID 입력");
+        jtfID = new JTextField();
         jtfID.setBounds(230, 50, 100, 20);
-        jtfID.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                jtfID.setText("");
-            }
-        });
         jp.add(jtfID);
 
         jtfPW = new JPasswordField();

@@ -87,4 +87,18 @@ public class Track {
     public void setTrackTime(int trackTime) {
         this.trackTime = trackTime;
     }
+
+    @Override
+    public String toString() {
+        return "Track{" +
+                "trackNo=" + trackNo +
+                ", titleImage='" + titleImage + '\'' +
+                ", startImage='" + startImage + '\'' +
+                ", gameImage='" + gameImage + '\'' +
+                ", startMusic='" + startMusic + '\'' +
+                ", gameMusic='" + gameMusic + '\'' +
+                ", titleName='" + titleName + '\'' +
+                ", trackTime=" + trackTime +
+                '}';
+    }
 }

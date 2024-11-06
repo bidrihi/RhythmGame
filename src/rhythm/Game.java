@@ -28,6 +28,7 @@ public class Game extends Thread {
     private Image keyPadLImage = new ImageIcon(Main.class.getResource("../images/keyPadBasic.png")).getImage();
 
     private String titleName;
+    private int trackNo;
     private String difficulty;
     private String musicTitle;
     private Music gameMusic;
@@ -41,8 +42,11 @@ public class Game extends Thread {
     int highCombo = 0;
     private Image comboImage = new ImageIcon(Main.class.getResource("../images/combo.png")).getImage();
 
-    public Game(String titleName, String difficulty, String musicTitle) {
+    LoginDAO loginDAO;
+
+    public Game(String titleName, int trackNo, String difficulty, String musicTitle) {
         this.titleName = titleName;
+        this.trackNo = trackNo;
         this.difficulty = difficulty;
         this.musicTitle = musicTitle;
         gameMusic = new Music(this.musicTitle, false);
@@ -97,7 +101,7 @@ public class Game extends Thread {
         } else g.drawString(String.valueOf(score), 600, 702);
         g.drawString(String.valueOf(highScore), 800, 702);
 
-        g.drawImage(comboImage, 1070,150,null);
+        g.drawImage(comboImage, 1070, 150, null);
         g.setColor(Color.WHITE);
         g.drawString(String.valueOf(combo), 1150, 270);
         g.drawString(String.valueOf(highCombo), 1150, 350);
@@ -160,7 +164,7 @@ public class Game extends Thread {
     }
 
     public void pressSpace() {
-        judge("Space");
+        judge("SPACE");
         noteRouteSpace1Image = new ImageIcon(Main.class.getResource("../images/noteRoutePressed.png")).getImage();
         noteRouteSpace2Image = new ImageIcon(Main.class.getResource("../images/noteRoutePressed.png")).getImage();
         keyPadSpace1Image = new ImageIcon(Main.class.getResource("../images/keyPadPressed.png")).getImage();
@@ -213,7 +217,7 @@ public class Game extends Thread {
 
     @Override
     public void run() {
-        dropNotes(this.titleName);
+        dropNotes(this.trackNo);
     }
 
     public void close() {
@@ -221,325 +225,13 @@ public class Game extends Thread {
         this.interrupt();
     }
 
-    public void dropNotes(String titleName) {
-        Beat[] beats = null;
-        if (titleName.equalsIgnoreCase("information") && difficulty.equals("Easy")) {
-            int startTime = 4460 - Note.REACH_TIME * 1000;
-            int gap = 2000;
-            beats = new Beat[]{
-                    new Beat(startTime, "Space"),
-                    new Beat(startTime + gap * 2, "Space"),
-                    new Beat(startTime + gap * 4, "S"),
-                    new Beat(startTime + gap * 6, "D"),
-                    new Beat(startTime + gap * 8, "F"),
-                    new Beat(startTime + gap * 10, "J"),
-                    new Beat(startTime + gap * 12, "K"),
-                    new Beat(startTime + gap * 14, "L"),
-                    new Beat(startTime + gap * 16, "L"),
-                    new Beat(startTime + gap * 18, "K"),
-                    new Beat(startTime + gap * 20, "J"),
-                    new Beat(startTime + gap * 22, "D"),
-                    new Beat(startTime + gap * 24, "F"),
-                    new Beat(startTime + gap * 26, "S"),
-                    new Beat(startTime + gap * 28, "S"),
-                    new Beat(startTime + gap * 30, "J"),
-                    new Beat(startTime + gap * 32, "Space"),
-                    new Beat(startTime + gap * 34, "S"),
-                    new Beat(startTime + gap * 36, "K"),
-                    new Beat(startTime + gap * 38, "S"),
-                    new Beat(startTime + gap * 40, "L"),
-                    new Beat(startTime + gap * 42, "L"),
-                    new Beat(startTime + gap * 44, "F"),
-                    new Beat(startTime + gap * 46, "Space"),
-                    new Beat(startTime + gap * 48, "D"),
-                    new Beat(startTime + gap * 50, "D"),
-                    new Beat(startTime + gap * 52, "S"),
-                    new Beat(startTime + gap * 54, "J"),
-                    new Beat(startTime + gap * 56, "S"),
-                    new Beat(startTime + gap * 58, "Space"),
-                    new Beat(startTime + gap * 60, "L"),
-                    new Beat(startTime + gap * 62, "S"),
-                    new Beat(startTime + gap * 64, "L"),
-                    new Beat(startTime + gap * 66, "L"),
-                    new Beat(startTime + gap * 68, "F"),
-                    new Beat(startTime + gap * 70, "Space"),
-                    new Beat(startTime + gap * 72, "D"),
-                    new Beat(startTime + gap * 74, "D"),
-                    new Beat(startTime + gap * 76, "S"),
-                    new Beat(startTime + gap * 78, "J"),
-                    new Beat(startTime + gap * 80, "S"),
-                    new Beat(startTime + gap * 82, "Space"),
-                    new Beat(startTime + gap * 84, "L"),
-                    new Beat(startTime + gap * 86, "J"),
-                    new Beat(startTime + gap * 88, "K"),
-                    new Beat(startTime + gap * 90, "L")
-            };
-        } else if (titleName.equalsIgnoreCase("information") && difficulty.equals("Hard")) {
-            int startTime = 4460 - Note.REACH_TIME * 1000;
-            int gap = 2000;
-            beats = new Beat[]{
-                    new Beat(startTime, "Space"),
-                    new Beat(startTime + gap * 2, "Space"),
-                    new Beat(startTime + gap * 4, "S"),
-                    new Beat(startTime + gap * 6, "D"),
-                    new Beat(startTime + gap * 8, "F"),
-                    new Beat(startTime + gap * 10, "J"),
-                    new Beat(startTime + gap * 12, "K"),
-                    new Beat(startTime + gap * 14, "L"),
-                    new Beat(startTime + gap * 16, "L"),
-                    new Beat(startTime + gap * 18, "K"),
-                    new Beat(startTime + gap * 20, "J"),
-                    new Beat(startTime + gap * 22, "D"),
-                    new Beat(startTime + gap * 24, "F"),
-                    new Beat(startTime + gap * 26, "S"),
-                    new Beat(startTime + gap * 28, "S"),
-                    new Beat(startTime + gap * 30, "J"),
-                    new Beat(startTime + gap * 32, "Space"),
-                    new Beat(startTime + gap * 34, "S"),
-                    new Beat(startTime + gap * 36, "K"),
-                    new Beat(startTime + gap * 38, "S"),
-                    new Beat(startTime + gap * 40, "L"),
-                    new Beat(startTime + gap * 42, "L"),
-                    new Beat(startTime + gap * 44, "F"),
-                    new Beat(startTime + gap * 46, "Space"),
-                    new Beat(startTime + gap * 48, "D"),
-                    new Beat(startTime + gap * 50, "D"),
-                    new Beat(startTime + gap * 52, "S"),
-                    new Beat(startTime + gap * 54, "J"),
-                    new Beat(startTime + gap * 56, "S"),
-                    new Beat(startTime + gap * 58, "Space"),
-                    new Beat(startTime + gap * 60, "L"),
-                    new Beat(startTime + gap * 62, "S"),
-                    new Beat(startTime + gap * 64, "L"),
-                    new Beat(startTime + gap * 66, "L"),
-                    new Beat(startTime + gap * 68, "F"),
-                    new Beat(startTime + gap * 70, "Space"),
-                    new Beat(startTime + gap * 72, "D"),
-                    new Beat(startTime + gap * 74, "D"),
-                    new Beat(startTime + gap * 76, "S"),
-                    new Beat(startTime + gap * 78, "J"),
-                    new Beat(startTime + gap * 80, "S"),
-                    new Beat(startTime + gap * 82, "Space"),
-                    new Beat(startTime + gap * 84, "L"),
-                    new Beat(startTime + gap * 86, "J"),
-                    new Beat(startTime + gap * 88, "K"),
-                    new Beat(startTime + gap * 90, "L")
-            };
-        } else if (titleName.equalsIgnoreCase("sunset road") && difficulty.equals("Easy")) {
-            int startTime = 1000 - Note.REACH_TIME * 1000;
-            int gap = 2000;
-            beats = new Beat[]{
-                    new Beat(startTime, "Space"),
-                    new Beat(startTime + gap * 2, "Space"),
-                    new Beat(startTime + gap * 4, "S"),
-                    new Beat(startTime + gap * 6, "D"),
-                    new Beat(startTime + gap * 8, "F"),
-                    new Beat(startTime + gap * 10, "J"),
-                    new Beat(startTime + gap * 12, "K"),
-                    new Beat(startTime + gap * 14, "L"),
-                    new Beat(startTime + gap * 16, "L"),
-                    new Beat(startTime + gap * 18, "K"),
-                    new Beat(startTime + gap * 20, "J"),
-                    new Beat(startTime + gap * 22, "D"),
-                    new Beat(startTime + gap * 24, "F"),
-                    new Beat(startTime + gap * 26, "S"),
-                    new Beat(startTime + gap * 28, "S"),
-                    new Beat(startTime + gap * 30, "J"),
-                    new Beat(startTime + gap * 32, "Space"),
-                    new Beat(startTime + gap * 34, "S"),
-                    new Beat(startTime + gap * 36, "K"),
-                    new Beat(startTime + gap * 38, "S"),
-                    new Beat(startTime + gap * 40, "L"),
-                    new Beat(startTime + gap * 42, "L"),
-                    new Beat(startTime + gap * 44, "F"),
-                    new Beat(startTime + gap * 46, "Space"),
-                    new Beat(startTime + gap * 48, "D"),
-                    new Beat(startTime + gap * 50, "D"),
-                    new Beat(startTime + gap * 52, "S"),
-                    new Beat(startTime + gap * 54, "J"),
-                    new Beat(startTime + gap * 56, "S"),
-                    new Beat(startTime + gap * 58, "Space"),
-                    new Beat(startTime + gap * 60, "L"),
-                    new Beat(startTime + gap * 62, "S"),
-                    new Beat(startTime + gap * 64, "L"),
-                    new Beat(startTime + gap * 66, "L"),
-                    new Beat(startTime + gap * 68, "F"),
-                    new Beat(startTime + gap * 70, "Space"),
-                    new Beat(startTime + gap * 72, "D"),
-                    new Beat(startTime + gap * 74, "D"),
-                    new Beat(startTime + gap * 76, "S"),
-                    new Beat(startTime + gap * 78, "J"),
-                    new Beat(startTime + gap * 80, "S"),
-                    new Beat(startTime + gap * 82, "Space"),
-                    new Beat(startTime + gap * 84, "L"),
-                    new Beat(startTime + gap * 86, "J"),
-                    new Beat(startTime + gap * 88, "K"),
-                    new Beat(startTime + gap * 90, "L"),
-                    new Beat(startTime + gap * 92, "L"),
-                    new Beat(startTime + gap * 94, "K"),
-                    new Beat(startTime + gap * 96, "J"),
-                    new Beat(startTime + gap * 98, "K"),
-                    new Beat(startTime + gap * 100, "J"),
-            };
-        } else if (titleName.equalsIgnoreCase("sunset road") && difficulty.equals("Hard")) {
-            int startTime = 1000 - Note.REACH_TIME * 1000;
-            int gap = 2000;
-            beats = new Beat[]{
-                    new Beat(startTime, "Space"),
-                    new Beat(startTime + gap * 2, "Space"),
-                    new Beat(startTime + gap * 4, "S"),
-                    new Beat(startTime + gap * 6, "D"),
-                    new Beat(startTime + gap * 8, "F"),
-                    new Beat(startTime + gap * 10, "J"),
-                    new Beat(startTime + gap * 12, "K"),
-                    new Beat(startTime + gap * 14, "L"),
-                    new Beat(startTime + gap * 16, "L"),
-                    new Beat(startTime + gap * 18, "K"),
-                    new Beat(startTime + gap * 20, "J"),
-                    new Beat(startTime + gap * 22, "D"),
-                    new Beat(startTime + gap * 24, "F"),
-                    new Beat(startTime + gap * 26, "S"),
-                    new Beat(startTime + gap * 28, "S"),
-                    new Beat(startTime + gap * 30, "J"),
-                    new Beat(startTime + gap * 32, "Space"),
-                    new Beat(startTime + gap * 34, "S"),
-                    new Beat(startTime + gap * 36, "K"),
-                    new Beat(startTime + gap * 38, "S"),
-                    new Beat(startTime + gap * 40, "L"),
-                    new Beat(startTime + gap * 42, "L"),
-                    new Beat(startTime + gap * 44, "F"),
-                    new Beat(startTime + gap * 46, "Space"),
-                    new Beat(startTime + gap * 48, "D"),
-                    new Beat(startTime + gap * 50, "D"),
-                    new Beat(startTime + gap * 52, "S"),
-                    new Beat(startTime + gap * 54, "J"),
-                    new Beat(startTime + gap * 56, "S"),
-                    new Beat(startTime + gap * 58, "Space"),
-                    new Beat(startTime + gap * 60, "L"),
-                    new Beat(startTime + gap * 62, "S"),
-                    new Beat(startTime + gap * 64, "L"),
-                    new Beat(startTime + gap * 66, "L"),
-                    new Beat(startTime + gap * 68, "F"),
-                    new Beat(startTime + gap * 70, "Space"),
-                    new Beat(startTime + gap * 72, "D"),
-                    new Beat(startTime + gap * 74, "D"),
-                    new Beat(startTime + gap * 76, "S"),
-                    new Beat(startTime + gap * 78, "J"),
-                    new Beat(startTime + gap * 80, "S"),
-                    new Beat(startTime + gap * 82, "Space"),
-                    new Beat(startTime + gap * 84, "L"),
-                    new Beat(startTime + gap * 86, "J"),
-                    new Beat(startTime + gap * 88, "K"),
-                    new Beat(startTime + gap * 90, "L"),
-                    new Beat(startTime + gap * 92, "L"),
-                    new Beat(startTime + gap * 94, "K"),
-                    new Beat(startTime + gap * 96, "J"),
-                    new Beat(startTime + gap * 98, "K"),
-                    new Beat(startTime + gap * 100, "J"),
-            };
-        } else if (titleName.equalsIgnoreCase("tokyo cafe") && difficulty.equals("Easy")) {
-            int startTime = 1000 - Note.REACH_TIME * 1000;
-            int gap = 1500;
-            beats = new Beat[]{
-                    new Beat(startTime, "Space"),
-                    new Beat(startTime + gap * 2, "Space"),
-                    new Beat(startTime + gap * 4, "S"),
-                    new Beat(startTime + gap * 6, "D"),
-                    new Beat(startTime + gap * 8, "F"),
-                    new Beat(startTime + gap * 10, "J"),
-                    new Beat(startTime + gap * 12, "K"),
-                    new Beat(startTime + gap * 14, "L"),
-                    new Beat(startTime + gap * 16, "L"),
-                    new Beat(startTime + gap * 18, "K"),
-                    new Beat(startTime + gap * 20, "J"),
-                    new Beat(startTime + gap * 22, "D"),
-                    new Beat(startTime + gap * 24, "F"),
-                    new Beat(startTime + gap * 26, "S"),
-                    new Beat(startTime + gap * 28, "S"),
-                    new Beat(startTime + gap * 30, "J"),
-                    new Beat(startTime + gap * 32, "Space"),
-                    new Beat(startTime + gap * 34, "S"),
-                    new Beat(startTime + gap * 36, "K"),
-                    new Beat(startTime + gap * 38, "S"),
-                    new Beat(startTime + gap * 40, "L"),
-                    new Beat(startTime + gap * 42, "L"),
-                    new Beat(startTime + gap * 44, "F"),
-                    new Beat(startTime + gap * 46, "Space"),
-                    new Beat(startTime + gap * 48, "D"),
-                    new Beat(startTime + gap * 50, "D"),
-                    new Beat(startTime + gap * 52, "S"),
-                    new Beat(startTime + gap * 54, "J"),
-                    new Beat(startTime + gap * 56, "S"),
-                    new Beat(startTime + gap * 58, "Space"),
-                    new Beat(startTime + gap * 60, "L"),
-                    new Beat(startTime + gap * 62, "S"),
-                    new Beat(startTime + gap * 64, "L"),
-                    new Beat(startTime + gap * 66, "L"),
-                    new Beat(startTime + gap * 68, "F"),
-                    new Beat(startTime + gap * 70, "Space"),
-                    new Beat(startTime + gap * 72, "D"),
-                    new Beat(startTime + gap * 74, "D"),
-                    new Beat(startTime + gap * 76, "S"),
-                    new Beat(startTime + gap * 78, "J"),
-                    new Beat(startTime + gap * 80, "S"),
-                    new Beat(startTime + gap * 82, "Space"),
-                    new Beat(startTime + gap * 84, "L"),
-                    new Beat(startTime + gap * 86, "J"),
-                    new Beat(startTime + gap * 88, "K"),
-                    new Beat(startTime + gap * 90, "L")
-            };
-        } else if (titleName.equalsIgnoreCase("tokyo cafe") && difficulty.equals("Hard")) {
-            int startTime = 1000 - Note.REACH_TIME * 1000;
-            int gap = 1500;
-            beats = new Beat[]{
-                    new Beat(startTime, "Space"),
-                    new Beat(startTime + gap * 2, "Space"),
-                    new Beat(startTime + gap * 4, "S"),
-                    new Beat(startTime + gap * 6, "D"),
-                    new Beat(startTime + gap * 8, "F"),
-                    new Beat(startTime + gap * 10, "J"),
-                    new Beat(startTime + gap * 12, "K"),
-                    new Beat(startTime + gap * 14, "L"),
-                    new Beat(startTime + gap * 16, "L"),
-                    new Beat(startTime + gap * 18, "K"),
-                    new Beat(startTime + gap * 20, "J"),
-                    new Beat(startTime + gap * 22, "D"),
-                    new Beat(startTime + gap * 24, "F"),
-                    new Beat(startTime + gap * 26, "S"),
-                    new Beat(startTime + gap * 28, "S"),
-                    new Beat(startTime + gap * 30, "J"),
-                    new Beat(startTime + gap * 32, "Space"),
-                    new Beat(startTime + gap * 34, "S"),
-                    new Beat(startTime + gap * 36, "K"),
-                    new Beat(startTime + gap * 38, "S"),
-                    new Beat(startTime + gap * 40, "L"),
-                    new Beat(startTime + gap * 42, "L"),
-                    new Beat(startTime + gap * 44, "F"),
-                    new Beat(startTime + gap * 46, "Space"),
-                    new Beat(startTime + gap * 48, "D"),
-                    new Beat(startTime + gap * 50, "D"),
-                    new Beat(startTime + gap * 52, "S"),
-                    new Beat(startTime + gap * 54, "J"),
-                    new Beat(startTime + gap * 56, "S"),
-                    new Beat(startTime + gap * 58, "Space"),
-                    new Beat(startTime + gap * 60, "L"),
-                    new Beat(startTime + gap * 62, "S"),
-                    new Beat(startTime + gap * 64, "L"),
-                    new Beat(startTime + gap * 66, "L"),
-                    new Beat(startTime + gap * 68, "F"),
-                    new Beat(startTime + gap * 70, "Space"),
-                    new Beat(startTime + gap * 72, "D"),
-                    new Beat(startTime + gap * 74, "D"),
-                    new Beat(startTime + gap * 76, "S"),
-                    new Beat(startTime + gap * 78, "J"),
-                    new Beat(startTime + gap * 80, "S"),
-                    new Beat(startTime + gap * 82, "Space"),
-                    new Beat(startTime + gap * 84, "L"),
-                    new Beat(startTime + gap * 86, "J"),
-                    new Beat(startTime + gap * 88, "K"),
-                    new Beat(startTime + gap * 90, "L")
-            };
+    public void dropNotes(int trackNo) {
+        ArrayList<NoteVO> list = loginDAO.selectNote(trackNo);
+        Beat[] beats = new Beat[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            beats[i] = new Beat(list.get(i).getNoteTime(), list.get(i).getNoteType().toUpperCase());
         }
+
         int i = 0;
         gameMusic.start();
         while (i < beats.length && !isInterrupted()) {
@@ -594,7 +286,7 @@ public class Game extends Thread {
         } else if (judge.equals("Perfect")) {
             judgeImage = new ImageIcon(Main.class.getResource("../images/judgePerfect.png")).getImage();
             score += 50;
-            combo +=1;
+            combo++;
         } else if (judge.equals("Early")) {
             judgeImage = new ImageIcon(Main.class.getResource("../images/judgeEarly.png")).getImage();
             score += 5;
