@@ -155,7 +155,7 @@ public class LoginDAOImple implements LoginDAO, OracleQuery {
             while (rs.next()) {
                 int noteNo = rs.getInt(1);
                 int noteTime = rs.getInt(3);
-                String noteType = rs.getString(4);
+                String noteType = rs.getString(4).toUpperCase();
 
                 NoteVO vo = new NoteVO(noteNo, trackNo, noteTime, noteType);
                 list.add(vo);

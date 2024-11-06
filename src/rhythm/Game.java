@@ -229,7 +229,7 @@ public class Game extends Thread {
         ArrayList<NoteVO> list = loginDAO.selectNote(trackNo);
         Beat[] beats = new Beat[list.size()];
         for (int i = 0; i < list.size(); i++) {
-            beats[i] = new Beat(list.get(i).getNoteTime(), list.get(i).getNoteType().toUpperCase());
+            beats[i] = new Beat(list.get(i).getNoteTime(), list.get(i).getNoteType());
         }
 
         int i = 0;
