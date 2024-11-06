@@ -65,7 +65,7 @@ public class LoginDAOImple implements LoginDAO, OracleQuery {
 
             pstmt.setString(1, loginID);
             pstmt.setString(2, loginPW);
-            System.out.println(loginID);
+
             rs = pstmt.executeQuery();
 
             if (rs.next()) {
@@ -154,14 +154,12 @@ public class LoginDAOImple implements LoginDAO, OracleQuery {
 
             while (rs.next()) {
                 int noteNo = rs.getInt(1);
-                trackNo = rs.getInt(2);
                 int noteTime = rs.getInt(3);
                 String noteType = rs.getString(4);
 
                 NoteVO vo = new NoteVO(noteNo, trackNo, noteTime, noteType);
                 list.add(vo);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

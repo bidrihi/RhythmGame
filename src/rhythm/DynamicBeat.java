@@ -69,7 +69,13 @@ public class DynamicBeat extends JFrame {
     }
 
     public void musicStart() {
-        tracklist = loginDAO.selectMusic();
+        // tracklist = loginDAO.selectMusic();
+        tracklist.add(new Track(1, "information title.png", "information.png",
+                "information ingame.png", "information selected.mp3", "information.mp3", "INFORMATION", 187000));
+        tracklist.add(new Track(2, "sunset road title.png", "sunset road.png",
+                "sunset road ingame.png", "sunset road selected.mp3", "sunset road.mp3", "SUNSET ROAD", 184000));
+        tracklist.add(new Track(3, "tokyo cafe title.png", "tokyo cafe.png",
+                "tokyo cafe ingame.png", "tokyo cafe selected.mp3", "tokyo cafe.mp3", "TOKYO CAFE", 153000));
 
         setUndecorated(true); // 기본 메뉴바 숨기고 바뀐 메뉴바로 변경
         setTitle("Dynamic Beat");
@@ -381,10 +387,10 @@ public class DynamicBeat extends JFrame {
         rightButton.setVisible(false);
         easyButton.setVisible(false);
         hardButton.setVisible(false);
-        background = new ImageIcon(Main.class.getResource("../images/" + tracklist.get(nowSelected).getGameImage().toLowerCase())).getImage();
+        background = new ImageIcon(Main.class.getResource("../images/" + tracklist.get(nowSelected).getGameImage())).getImage();
         backButton.setVisible(true);
         isGameScreen = true;
-        game = new Game(tracklist.get(nowSelected).getTitleName(), tracklist.get(nowSelected).getTrackNo(), difficulty, tracklist.get(nowSelected).getGameMusic().toLowerCase());
+        game = new Game(tracklist.get(nowSelected).getTitleName(), tracklist.get(nowSelected).getTrackNo(), difficulty, tracklist.get(nowSelected).getGameMusic());
         game.start();
         game.score = 0;
         game.combo = 0;
