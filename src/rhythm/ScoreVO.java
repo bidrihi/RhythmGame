@@ -8,11 +8,12 @@ public class ScoreVO {
     private int combo;
     private int highScore;
     private int highCombo;
+    private String difficulty;
 
     public ScoreVO() {
     }
 
-    public ScoreVO(int scoreNo, int memberNo, int musicNo, int scoreResult, int combo, int highScore, int highCombo) {
+    public ScoreVO(int scoreNo, int memberNo, int musicNo, int scoreResult, int combo, int highScore, int highCombo, String difficulty) {
         this.scoreNo = scoreNo;
         this.memberNo = memberNo;
         this.musicNo = musicNo;
@@ -20,6 +21,7 @@ public class ScoreVO {
         this.combo = combo;
         this.highScore = highScore;
         this.highCombo = highCombo;
+        this.difficulty = difficulty;
     }
 
     public int getScoreNo() {

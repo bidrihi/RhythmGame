@@ -9,6 +9,7 @@ public interface LoginDAO{
     int memberInsert(MemberVO vo);
     boolean loginStart();
     void scoreUpdate(int highScore, int highCombo, int trackNo, String difficulty);
-    ArrayList<NoteVO> selectNote(int trackNo);
+    ArrayList<NoteVO> selectNote(int trackNo, String difficulty);
     ArrayList<Track> selectMusic();
+    ScoreVO selectScore(int trackNo, String difficulty);
 }

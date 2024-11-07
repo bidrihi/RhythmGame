@@ -4,6 +4,7 @@ import oracle.jdbc.driver.OracleDriver;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Dictionary;
 
 public class LoginDAOImple implements LoginDAO, OracleQuery {
 
@@ -143,21 +144,22 @@ public class LoginDAOImple implements LoginDAO, OracleQuery {
     }
 
     @Override
-    public ArrayList<NoteVO> selectNote(int trackNo) {
+    public ArrayList<NoteVO> selectNote(int trackNo, String difficulty) {
         ArrayList<NoteVO> list = new ArrayList<>();
         try {
             DriverManager.registerDriver(new OracleDriver());
             conn = DriverManager.getConnection(URL, USER, PASSWORD);
             pstmt = conn.prepareStatement(selectNote);
             pstmt.setInt(1, trackNo);
+            pstmt.setString(2, difficulty);
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
                 int noteNo = rs.getInt(1);
-                int noteTime = rs.getInt(3);
-                String noteType = rs.getString(4).toUpperCase();
+                int noteTime = rs.getInt(4);
+                String noteType = rs.getString(5).toUpperCase();
 
-                NoteVO vo = new NoteVO(noteNo, trackNo, noteTime, noteType);
+                NoteVO vo = new NoteVO(noteNo, trackNo, difficulty, noteTime, noteType);
                 list.add(vo);
             }
         } catch (SQLException e) {
@@ -207,5 +209,42 @@ public class LoginDAOImple implements LoginDAO, OracleQuery {
             }
         }
         return list;
+    }
+
+    @Override
+    public ScoreVO selectScore(int trackNo, String difficulty) {
+        ScoreVO vo = new ScoreVO();
+        try {
+            DriverManager.registerDriver(new OracleDriver());
+            conn = DriverManager.getConnection(URL, USER, PASSWORD);
+            pstmt = conn.prepareStatement(selectScore);
+            pstmt.setInt(1, getMemberNo);
+            pstmt.setInt(2, trackNo);
+            pstmt.setString(3, difficulty);
+
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int scoreNo = rs.getInt(1);
+                int musicNo = trackNo;
+                int scoreResult = rs.getInt(4);
+                int combo = rs.getInt(5);
+                int highScore = rs.getInt(6);
+                int highCombo = rs.getInt(7);
+
+                vo = new ScoreVO(scoreNo, getMemberNo, trackNo, scoreResult, combo, highScore, highCombo, difficulty);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                pstmt.close();
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return vo;
     }
 }

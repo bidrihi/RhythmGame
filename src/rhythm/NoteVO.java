@@ -3,15 +3,17 @@ package rhythm;
 public class NoteVO {
     private int noteNo;
     private int trackNo;
+    private String difficulty;
     private int noteTime;
     private String noteType;
 
     public NoteVO() {
     }
 
-    public NoteVO(int noteNo, int trackNo, int noteTime, String noteType) {
+    public NoteVO(int noteNo, int trackNo, String difficulty, int noteTime, String noteType) {
         this.noteNo = noteNo;
         this.trackNo = trackNo;
+        this.difficulty = difficulty;
         this.noteTime = noteTime;
         this.noteType = noteType;
     }
@@ -46,5 +48,13 @@ public class NoteVO {
 
     public void setNoteType(String noteType) {
         this.noteType = noteType;
+    }
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
     }
 }
